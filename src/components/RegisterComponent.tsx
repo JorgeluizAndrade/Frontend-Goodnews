@@ -11,50 +11,23 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormDescription,
   FormMessage,
 } from "./ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useToast } from "@/hooks/use-toast";
-
-const emailRegex =
-  /^(?!\.)(?!.*\.\.)([A-Z0-9_'+-\.]*)[A-Z0-9_'+-]@([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i;
-
-const registerSchema = z.object({
-  name: z.string().min(5, {
-    message: "O primeiro nome deve ter pelo menos 5 caracteres.",
-  }),
-  lastname: z.string().min(5, {
-    message: "O último nome deve ter pelo menos 5 caracteres.",
-  }),
-  email: z.string().superRefine((data, ctx) => {
-    if (!emailRegex.test(data)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.invalid_string,
-        message: "Email Inválido!",
-        validation: "email",
-      });
-    }
-  }),
-  password: z.string().min(9, {
-    message: "A senha deve ter pelo menos 9 caracteres.",
-  }),
-  role: z.string().max(5, {
-    message: "A role deve ter pelo menos 5 caracteres.",
-  }),
-});
+import { useRouter } from "next/navigation";
+import { registerSchema } from "@/schemas/registerSchema";
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 const RegisterComponent = () => {
-  const { toast } = useToast()
-
-  const dataUserCreation = Date().toLocaleUpperCase();
-
   const [loading, setLoading] = React.useState(true);
+  const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const router = useRouter();
+
 
   const fetchData = async ({
     name,
@@ -68,20 +41,25 @@ const RegisterComponent = () => {
         "http://localhost:8080/api/auth/register",
         { name, lastname, email, password, role }
       );
-      toast({
-        title: "Registration successful",
-        description: dataUserCreation,
-      })
-
       console.log("Registration successful:", response.data);
+      setSuccessMessage("Registro realizado com sucesso!");
+      setErrorMessage(null); 
       setLoading(true);
+
+      setTimeout(()=> {
+        router.push("/login");
+      }, 3000)
+
       return response.data;
     } catch (error) {
       setLoading(true);
-      toast({
-        title: "Something went wrong",
-        description: "Não foi possível completar o registro. Tente novamente.",
-      })
+      setSuccessMessage(null); 
+
+      if (error instanceof AxiosError && error.response?.status === 409) {
+        setErrorMessage("Email do usuário já existente. Por favor, tente outro.");
+      } else {
+        setErrorMessage("Algo deu errado. Tente novamente.");
+      }
       console.error("Registration failed:", error);
     }
   };
@@ -98,8 +76,10 @@ const RegisterComponent = () => {
   });
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
+    setSuccessMessage(null);
+    setErrorMessage(null);
     fetchData(data);
-    setLoading(false)
+    setLoading(false);
   };
 
   return (
@@ -110,6 +90,18 @@ const RegisterComponent = () => {
           Digite suas informações para registro.
         </p>
       </div>
+
+      {successMessage && (
+        <div className="text-green-600 font-semibold text-center">
+          {successMessage}
+        </div>
+      )}
+      {errorMessage && (
+        <div className="text-red-600 font-semibold text-center">
+          {errorMessage}
+        </div>
+      )}
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="space-y-4">
