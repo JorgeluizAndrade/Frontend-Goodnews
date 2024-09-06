@@ -15,56 +15,15 @@ import {
 } from "./ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import axios, { AxiosError } from "axios";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { registerSchema } from "@/schemas/registerSchema";
-
-type RegisterFormValues = z.infer<typeof registerSchema>;
+import { RegisterSchema, registerSchema } from "@/schemas/registerSchema";
+import { useRegister } from "@/hooks/useRegister"
 
 const RegisterComponent = () => {
-  const [loading, setLoading] = React.useState(true);
-  const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  const router = useRouter();
+  const { register, successMessage, errorMessage, loading } = useRegister();
 
-
-  const fetchData = async ({
-    name,
-    lastname,
-    email,
-    password,
-    role,
-  }: RegisterFormValues) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/register",
-        { name, lastname, email, password, role }
-      );
-      console.log("Registration successful:", response.data);
-      setSuccessMessage("Registro realizado com sucesso!");
-      setErrorMessage(null); 
-      setLoading(true);
-
-      setTimeout(()=> {
-        router.push("/login");
-      }, 3000)
-
-      return response.data;
-    } catch (error) {
-      setLoading(true);
-      setSuccessMessage(null); 
-
-      if (error instanceof AxiosError && error.response?.status === 409) {
-        setErrorMessage("Email do usuário já existente. Por favor, tente outro.");
-      } else {
-        setErrorMessage("Algo deu errado. Tente novamente.");
-      }
-      console.error("Registration failed:", error);
-    }
-  };
-
-  const form = useForm<RegisterFormValues>({
+  const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
@@ -75,11 +34,8 @@ const RegisterComponent = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
-    setSuccessMessage(null);
-    setErrorMessage(null);
-    fetchData(data);
-    setLoading(false);
+  const onSubmit: SubmitHandler<RegisterSchema> = (data) => {
+    register(data)
   };
 
   return (
