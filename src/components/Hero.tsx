@@ -6,8 +6,6 @@ import welcome from "../../public/welcome.jpg";
 import { motion } from "framer-motion";
 
 import React from "react";
-import { Button } from "./ui/button";
-import { EnvelopeOpenIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 export const Hero = () => {
@@ -58,9 +56,6 @@ export const Hero = () => {
               >
                 Ver postagens
               </Link>
-              <Button className="ml-4 inline-flex border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">
-                <EnvelopeOpenIcon className="mr-2 h-4 w-4" /> Login with Email
-              </Button>
             </motion.div>
           </div>
           <motion.div
