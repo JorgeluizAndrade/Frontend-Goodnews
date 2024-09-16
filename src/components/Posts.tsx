@@ -146,9 +146,12 @@ export const Posts = () => {
                           <h3 className="text-lg font-semibold line-clamp-2">
                             {post.title}
                           </h3>
-                          <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
-                            {post.text}
-                          </p>
+                          <p
+                            dangerouslySetInnerHTML={{
+                              __html: post.text || "",
+                            }}
+                            className="mt-2 text-sm text-muted-foreground line-clamp-2"
+                          />
                           <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
                             <div>{post.slug}</div>
                           </div>

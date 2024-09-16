@@ -1,10 +1,14 @@
 import axios, { AxiosError } from "axios";
 import React from "react";
 import { LoginSchema } from "@/schemas/loginSchema";
+import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode"; 
 
 export const useAuth = () => {
     const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+    const router = useRouter();
+
 
     const login = async ({ email, password }: LoginSchema) => {
         try {
@@ -15,8 +19,16 @@ export const useAuth = () => {
             setSuccessMessage("Login realizado com sucesso!");
             setErrorMessage(null);
 
-            // Armazenar o token no localStorage ou sessionStorage
-            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("TOKEN_AUTH", response.data.token);
+
+            const decodedToken: any = jwtDecode(response.data.token); 
+            const userId = decodedToken.id; 
+      
+            localStorage.setItem("USER_ID", userId);
+      
+            setTimeout(() => {
+                router.push("/admin/managerPosts");
+            }, 3000)
 
             return response.data;
         } catch (error) {
