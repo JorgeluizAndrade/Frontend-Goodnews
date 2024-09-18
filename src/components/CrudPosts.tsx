@@ -1,32 +1,63 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import RichTextEditor from "./TextRich";
 import { useCreatePost } from "@/hooks/useCreatePost";
 import { PostSchema } from "@/schemas/postSchema";
+import { useUpdatePost } from "@/hooks/useUpdatePost";
+import { useDeletePost } from "@/hooks/useDeletePots";
 
-export type UseId = {
-  id: string;
+const getData = async () => {
+  const data = await fetch("http://localhost:8080/api/posts").then((res) =>
+    res.json()
+  );
+  return data;
 };
 
 const CrudPosts = () => {
-  const [posts, setPosts] = React.useState<PostSchema[]>([]);
+  const [posts, setPosts] = React.useState<PostSchema[] >([]);
   const [isCreating, setIsCreating] = React.useState(false);
-  const [isEditing, setIsEditing] = React.useState<string | null>(null); 
-  const [currentPost, setCurrentPost] = React.useState<Omit<PostSchema, 'id' | 'user'>>({
+  const [isEditing, setIsEditing] = React.useState<string | null>(null);
+  const [currentPost, setCurrentPost] = React.useState<{
+    title: string;
+    text: string;
+  }>({
     title: "",
     text: "",
   });
 
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const result = await getData();
+      setPosts(result);
+    };
+
+    fetchData();
+  }, []);
+
   const [content, setContent] = React.useState(currentPost.text || "");
 
   const { createPost, successMessage, errorMessage } = useCreatePost();
+  const { updatePost } = useUpdatePost();
+  const { deletePost } = useDeletePost();
 
-
-  const userId = localStorage.getItem("USER_ID")
+  const idUser = localStorage.getItem("USER_ID");
 
   const handleContentChange = (newValue: string) => {
     setContent(newValue);
@@ -41,7 +72,7 @@ const CrudPosts = () => {
   };
 
   const handleEdit = (post: PostSchema) => {
-    setIsEditing(post.id || null); 
+    setIsEditing(post.id || ""); 
     setCurrentPost({
       title: post.title,
       text: post.text,
@@ -49,32 +80,46 @@ const CrudPosts = () => {
     setContent(post.text);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
+    const postDeleted = await deletePost({id})
     setPosts(posts.filter((post) => post.id !== id));
+    return postDeleted
   };
 
   const handleSave = async () => {
     if (isEditing) {
-      setPosts(
-        posts.map((post) =>
-          post.id === isEditing ? { ...post, ...currentPost } : post
-        )
-      );
+      try {
+        await updatePost({
+          id: isEditing,
+          title: currentPost.title,
+          text: content,
+          user: { id: idUser || "" },
+        });
+        setPosts(
+          posts.map((post) =>
+            post.id === isEditing ? { ...post, ...currentPost, text: content } : post
+          )
+        );
+      } catch (error) {
+        console.error("Erro ao atualizar o post:", error);
+      }
     } else {
+      // Criando um novo post
       try {
         const newPost = await createPost({
           title: currentPost.title,
           text: content,
-          user: { id: userId  || "" },
+          user: { id: idUser || "" },
         });
 
         if (newPost) {
-          setPosts([...posts, { ...newPost, id: newPost.id }]);  
+          setPosts([...posts, { ...newPost, id: newPost.id }]);
         }
       } catch (error) {
         console.error(error);
       }
     }
+    // Resetando o estado após salvar
     setIsCreating(false);
     setIsEditing(null);
     setCurrentPost({
@@ -112,7 +157,9 @@ const CrudPosts = () => {
       {isCreating || isEditing !== null ? (
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>{isEditing !== null ? "Edit Post" : "Create Post"}</CardTitle>
+            <CardTitle>
+              {isEditing !== null ? "Edit Post" : "Create Post"}
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -124,7 +171,7 @@ const CrudPosts = () => {
                 onChange={handleInputChange}
               />
             </div>
-            <div className="space-y-2" >
+            <div className="space-y-2">
               <Label htmlFor="text">Content</Label>
               <RichTextEditor value={content} onChange={handleContentChange} />
             </div>
@@ -181,7 +228,7 @@ const CrudPosts = () => {
   );
 };
 
-function FilePenIcon(props) {
+function FilePenIcon(props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -202,7 +249,7 @@ function FilePenIcon(props) {
   );
 }
 
-function TrashIcon(props) {
+function TrashIcon(props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

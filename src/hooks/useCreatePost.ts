@@ -2,6 +2,7 @@ import { PostSchema } from "@/schemas/postSchema"
 import axios, { AxiosError } from "axios";
 import React from "react";
 
+
 export const useCreatePost = () => {
     const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -16,19 +17,21 @@ export const useCreatePost = () => {
             return;
         }
         try {
-            const response = await axios.post("http://localhost:8080/api/posts", 
+            const response = await axios.post("http://localhost:8080/api/posts",
                 {
-                    title, 
-                    text, 
+                    title,
+                    text,
                     user: { id }
-                }, 
+                },
                 {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                
+
+
+
             setSuccessMessage("Post Criado com sucesso!");
             setErrorMessage(null);
 
