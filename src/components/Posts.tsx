@@ -135,7 +135,6 @@ export const Posts = () => {
                         className="group relative overflow-hidden rounded-lg bg-background transition-all hover:shadow-lg"
                       >
                         <Link
-                          target="_blank"
                           href={`/post/${post.slug}/${post.id}`}
                           className="absolute inset-0 z-10"
                           prefetch={false}

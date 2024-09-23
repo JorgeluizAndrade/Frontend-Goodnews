@@ -1,25 +1,54 @@
-import { Params, Post } from "@/components/Post";
+import { GetStaticProps, GetStaticPaths } from "next";
+import { Post } from "@/components/Post";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/router";
-
-import { ParsedUrlQuery } from "querystring";
-
-const PostPage = () => {
-
-  const router  = useRouter();
-
-  const { slug, id } = router.query as ParsedUrlQuery & { slug?: string; id?: string };
+import "@/app/globals.css";
 
 
-  if (typeof slug !== "string" || typeof id !== "string") {
-    return <div>Loading...</div>; 
+export default function PostPage({ post }: { post: any }) {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
   }
 
+  const handleBack = () => {
+    router.back();
+  };
 
   return (
     <div>
-      <Post slug={slug} id={id} />
+      <Button 
+      size={"lg"}
+      variant={"ghost"}
+        onClick={handleBack}
+      >
+        <span className="text-xl">Voltar</span>
+      </Button>
+      <Post slug={post.slug} id={post.id} />
     </div>
   );
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await fetch("http://localhost:8080/api/posts");
+  const posts = await res.json();
+
+  const paths = posts.map((post: { slug: string; id: string }) => ({
+    params: { slug: post.slug, id: post.id },
+  }));
+
+  return { paths, fallback: true };
 };
 
-export default PostPage;
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const { slug, id } = params as { slug: string; id: string };
+
+  const res = await fetch(`http://localhost:8080/api/posts/${slug}/${id}`);
+  const post = await res.json();
+
+  return {
+    props: { post },
+    revalidate: 10,
+  };
+};
