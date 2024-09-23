@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import React from "react";
 import { LoginSchema } from "@/schemas/loginSchema";
 import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode";
 
 export const useAuth = () => {
     const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
@@ -21,14 +21,23 @@ export const useAuth = () => {
 
             localStorage.setItem("TOKEN_AUTH", response.data.token);
 
-            const decodedToken: any = jwtDecode(response.data.token); 
-            const userId = decodedToken.id; 
-      
+            const decodedToken: any = jwtDecode(response.data.token);
+            const userId = decodedToken.id;
+
+            const role = decodedToken.role;
+
             localStorage.setItem("USER_ID", userId);
-      
-            setTimeout(() => {
-                router.push("/admin/managerPosts");
-            }, 3000)
+
+            if (role == "USER") {
+                router.push("/");
+
+            } else {
+                setTimeout(() => {
+                    router.push("/admin/managerPosts");
+                }, 3000)
+            }
+
+
 
             return response.data;
         } catch (error) {

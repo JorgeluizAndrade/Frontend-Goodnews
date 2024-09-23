@@ -74,9 +74,6 @@ export const Hero = () => {
               alt="hero"
               src={gif}
             />
-            <a href="https://storyset.com/online">
-              Online illustrations by Storyset
-            </a>
           </motion.div>
         </div>
       </section>
