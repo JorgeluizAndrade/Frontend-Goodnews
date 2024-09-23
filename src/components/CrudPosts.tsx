@@ -22,7 +22,6 @@ import { useCreatePost } from "@/hooks/useCreatePost";
 import { PostSchema } from "@/schemas/postSchema";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { useDeletePost } from "@/hooks/useDeletePots";
-import { useRouter } from "next/navigation";
 
 const getData = async () => {
   const data = await fetch("http://localhost:8080/api/posts").then((res) =>
@@ -178,7 +177,7 @@ const CrudPosts = () => {
                 onChange={handleInputChange}
               />
             </div>
-            <div  dangerouslySetInnerHTML={{ __html: content || ""}} className="space-y-2" >
+            <div  className="space-y-2" >
               <Label htmlFor="text">Content</Label>
               <RichTextEditor  value={content} onChange={handleContentChange} />
             </div>
