@@ -22,6 +22,7 @@ import { useCreatePost } from "@/hooks/useCreatePost";
 import { PostSchema } from "@/schemas/postSchema";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { useDeletePost } from "@/hooks/useDeletePots";
+import { useRouter } from "next/navigation";
 
 const getData = async () => {
   const data = await fetch("http://localhost:8080/api/posts").then((res) =>
@@ -41,6 +42,14 @@ const CrudPosts = () => {
     title: "",
     text: "",
   });
+  const [idUser, setIdUser] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const userId = localStorage.getItem("USER_ID");
+    setIdUser(userId);
+  }, []);
+
+
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -56,8 +65,6 @@ const CrudPosts = () => {
   const { createPost, successMessage, errorMessage } = useCreatePost();
   const { updatePost } = useUpdatePost();
   const { deletePost } = useDeletePost();
-
-  const idUser = localStorage.getItem("USER_ID");
 
   const handleContentChange = (newValue: string) => {
     setContent(newValue);
@@ -171,9 +178,9 @@ const CrudPosts = () => {
                 onChange={handleInputChange}
               />
             </div>
-            <div className="space-y-2">
+            <div  dangerouslySetInnerHTML={{ __html: content || ""}} className="space-y-2" >
               <Label htmlFor="text">Content</Label>
-              <RichTextEditor value={content} onChange={handleContentChange} />
+              <RichTextEditor  value={content} onChange={handleContentChange} />
             </div>
           </CardContent>
           <CardFooter className="flex justify-end gap-2">
