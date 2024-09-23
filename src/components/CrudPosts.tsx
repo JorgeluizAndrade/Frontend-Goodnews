@@ -22,6 +22,7 @@ import { useCreatePost } from "@/hooks/useCreatePost";
 import { PostSchema } from "@/schemas/postSchema";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { useDeletePost } from "@/hooks/useDeletePots";
+import { useRouter } from "next/navigation";
 
 const getData = async () => {
   const data = await fetch("http://localhost:8080/api/posts").then((res) =>
@@ -31,7 +32,7 @@ const getData = async () => {
 };
 
 const CrudPosts = () => {
-  const [posts, setPosts] = React.useState<PostSchema[] >([]);
+  const [posts, setPosts] = React.useState<PostSchema[]>([]);
   const [isCreating, setIsCreating] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState<string | null>(null);
   const [currentPost, setCurrentPost] = React.useState<{
@@ -42,13 +43,12 @@ const CrudPosts = () => {
     text: "",
   });
   const [idUser, setIdUser] = React.useState<string | null>(null);
-
+  const router = useRouter();
+  
   React.useEffect(() => {
     const userId = localStorage.getItem("USER_ID");
     setIdUser(userId);
   }, []);
-
-
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -78,7 +78,7 @@ const CrudPosts = () => {
   };
 
   const handleEdit = (post: PostSchema) => {
-    setIsEditing(post.id || ""); 
+    setIsEditing(post.id || "");
     setCurrentPost({
       title: post.title,
       text: post.text,
@@ -87,9 +87,9 @@ const CrudPosts = () => {
   };
 
   const handleDelete = async (id: string) => {
-    const postDeleted = await deletePost({id})
+    const postDeleted = await deletePost({ id });
     setPosts(posts.filter((post) => post.id !== id));
-    return postDeleted
+    return postDeleted;
   };
 
   const handleSave = async () => {
@@ -103,7 +103,9 @@ const CrudPosts = () => {
         });
         setPosts(
           posts.map((post) =>
-            post.id === isEditing ? { ...post, ...currentPost, text: content } : post
+            post.id === isEditing
+              ? { ...post, ...currentPost, text: content }
+              : post
           )
         );
       } catch (error) {
@@ -143,6 +145,11 @@ const CrudPosts = () => {
     });
   };
 
+  const handleBack = () => {
+    router.push("/");
+  };
+
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentPost({
       ...currentPost,
@@ -154,6 +161,7 @@ const CrudPosts = () => {
     <div className="p-6 bg-muted/40">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Blog Posts</h1>
+        <Button variant={"ghost"} onClick={()=> handleBack()}>Voltar</Button>
         <Button onClick={handleCreate}>Create Post</Button>
       </div>
 
@@ -177,9 +185,9 @@ const CrudPosts = () => {
                 onChange={handleInputChange}
               />
             </div>
-            <div  className="space-y-2" >
+            <div className="space-y-2">
               <Label htmlFor="text">Content</Label>
-              <RichTextEditor  value={content} onChange={handleContentChange} />
+              <RichTextEditor value={content} onChange={handleContentChange} />
             </div>
           </CardContent>
           <CardFooter className="flex justify-end gap-2">
@@ -234,7 +242,9 @@ const CrudPosts = () => {
   );
 };
 
-function FilePenIcon(props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) {
+function FilePenIcon(
+  props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+) {
   return (
     <svg
       {...props}
@@ -255,7 +265,9 @@ function FilePenIcon(props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSV
   );
 }
 
-function TrashIcon(props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) {
+function TrashIcon(
+  props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+) {
   return (
     <svg
       {...props}
