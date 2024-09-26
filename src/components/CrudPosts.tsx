@@ -44,7 +44,7 @@ const CrudPosts = () => {
   });
   const [idUser, setIdUser] = React.useState<string | null>(null);
   const router = useRouter();
-  
+
   React.useEffect(() => {
     const userId = localStorage.getItem("USER_ID");
     setIdUser(userId);
@@ -149,7 +149,6 @@ const CrudPosts = () => {
     router.push("/");
   };
 
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentPost({
       ...currentPost,
@@ -161,7 +160,9 @@ const CrudPosts = () => {
     <div className="p-6 bg-muted/40">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Blog Posts</h1>
-        <Button variant={"ghost"} onClick={()=> handleBack()}>Voltar</Button>
+        <Button variant={"ghost"} onClick={() => handleBack()}>
+          Voltar
+        </Button>
         <Button onClick={handleCreate}>Create Post</Button>
       </div>
 
@@ -188,6 +189,15 @@ const CrudPosts = () => {
             <div className="space-y-2">
               <Label htmlFor="text">Content</Label>
               <RichTextEditor value={content} onChange={handleContentChange} />
+
+              {/* Preview do conteúdo HTML gerado */}
+              <div className="mt-4">
+                <Label>Preview do Conteúdo</Label>
+                <div
+                  className="border rounded p-2 bg-white"
+                  dangerouslySetInnerHTML={{ __html: content || "" }}
+                />
+              </div>
             </div>
           </CardContent>
           <CardFooter className="flex justify-end gap-2">
@@ -213,6 +223,9 @@ const CrudPosts = () => {
                 <TableRow key={post.id}>
                   <TableCell className="font-medium">{post.title}</TableCell>
                   <TableCell>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: post.text || "" }}
+                    />
                     <div className="flex items-center justify-end gap-2">
                       <Button
                         variant="ghost"

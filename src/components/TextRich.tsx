@@ -5,7 +5,7 @@ import { FaBold } from "react-icons/fa";
 import { FaItalic, FaList } from "react-icons/fa";
 import { Toggle } from "@/components/ui/toggle";
 import { Separator } from "@/components/ui/separator";
-import { LuHeading1 } from "react-icons/lu";
+import { LuHeading2 } from "react-icons/lu";
 import Heading from "@tiptap/extension-heading";
 
 const RichTextEditor = ({
@@ -34,9 +34,9 @@ const RichTextEditor = ({
         levels: [1, 2, 3],
       }),
     ],
-    content: value, // Set the initial content with the provided value
+    content: value, 
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML()); // Call the onChange callback with the updated HTML content
+      onChange(editor.getHTML()); 
     },
   });
 
@@ -53,6 +53,7 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
     <div className="border border-input bg-transparent rounded-br-md rounded-bl-md p-1 flex flex-row items-center gap-1">
       <Toggle
         size="sm"
+        className={editor.isActive("bold") ? "text-red-600" : "text-black"}
         pressed={editor.isActive("bold")}
         onPressedChange={() => editor.chain().focus().toggleBold().run()}
       >
@@ -60,6 +61,7 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
       </Toggle>
       <Toggle
         size="sm"
+        className={editor.isActive("italic") ? "text-red-600" : "text-black"}
         pressed={editor.isActive("italic")}
         onPressedChange={() => editor.chain().focus().toggleItalic().run()}
       >
@@ -67,16 +69,18 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
       </Toggle>
       <Toggle
         size="sm"
-        pressed={editor.isActive("heading", { level: 1 })}
+        className={editor.isActive("heading") ? "text-red-600" : "text-black"}
+        pressed={editor.isActive("heading", { level: 2 })}
         onPressedChange={() =>
-          editor.chain().focus().toggleHeading({ level: 1 }).run()
+          editor.chain().focus().toggleHeading({ level: 2 }).run()
         }
       >
-        <LuHeading1 className="h-4 w-4" />
+        <LuHeading2 className="h-4 w-4" />
       </Toggle>
       <Separator orientation="vertical" className="w-[1px] h-8" />
       <Toggle
         size="sm"
+        className={editor.isActive("bulletList") ? "text-red-600" : "text-black"}
         pressed={editor.isActive("bulletList")}
         onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
       >

@@ -70,7 +70,7 @@ export const Hero = () => {
           lg:w-full md:w-1/2 w-5/6"
           >
             <Image
-              className="object-cover object-center rounded"
+              className="object-cover object-center rounded-xl"
               alt="hero"
               src={gif}
             />
