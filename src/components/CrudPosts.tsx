@@ -22,7 +22,7 @@ import RichTextEditor from "./TextRich";
 import { useCreatePost } from "@/hooks/useCreatePost";
 import { PostSchema } from "@/schemas/postSchema";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
-import { useDeletePost } from "@/hooks/useDeletePots";
+import { useDeletePost } from "@/hooks/useDeletePost";
 import { useRouter } from "next/navigation";
 
 
