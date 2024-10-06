@@ -12,7 +12,7 @@ export const useRegister = () => {
 
     const register = async ({ name, lastname, email, password, role }: RegisterSchema) => {
         try {
-            const response = await axios.post("http://localhost:8080/api/auth/register", {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/auth/register`, {
                 name, lastname, email, password, role
             });
             setSuccessMessage("Registro realizado com sucesso!");

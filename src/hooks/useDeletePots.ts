@@ -14,7 +14,7 @@ export const useDeletePost = () => {
 
         try {
             const response = await axios.delete(
-                `http://localhost:8080/api/posts/${id}`,
+                `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts/${id}`,
                 {
                     headers: {
                         'Content-Type': 'application/json',

@@ -19,12 +19,16 @@ type PostApi = {
   slug: string;
 };
 
+const urlEndpoint:string = `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts`
+
 const getData = async () => {
-  const data = await fetch("http://localhost:8080/api/posts").then((res) =>
+  const data = await fetch(urlEndpoint).then((res) =>
     res.json()
   );
   return data;
 };
+
+console.log(urlEndpoint)
 
 export const Posts = () => {
   const [pagination, setPagination] = React.useState<number>(1);

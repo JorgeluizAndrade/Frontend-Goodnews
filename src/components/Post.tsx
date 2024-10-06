@@ -24,7 +24,7 @@ export const Post = ({ slug, id }: Params) => {
 
   const getData = async () => {
     const data = await fetch(
-      `http://localhost:8080/api/posts/${slug}/${id}`
+      `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts/${slug}/${id}`
     ).then((res) => res.json());
     return data;
   };

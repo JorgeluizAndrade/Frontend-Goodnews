@@ -12,7 +12,7 @@ export const useAuth = () => {
 
     const login = async ({ email, password }: LoginSchema) => {
         try {
-            const response = await axios.post("http://localhost:8080/api/auth/login", {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/auth/login`, {
                 email,
                 password,
             });

@@ -17,7 +17,7 @@ export const useCreatePost = () => {
             return;
         }
         try {
-            const response = await axios.post("http://localhost:8080/api/posts",
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts`,
                 {
                     title,
                     text,

@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import RichTextEditor from "./TextRich";
 import { useCreatePost } from "@/hooks/useCreatePost";
 import { PostSchema } from "@/schemas/postSchema";
@@ -24,8 +25,13 @@ import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { useDeletePost } from "@/hooks/useDeletePots";
 import { useRouter } from "next/navigation";
 
+
+
+const urlEndpoint:string = `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts`
+
+
 const getData = async () => {
-  const data = await fetch("http://localhost:8080/api/posts").then((res) =>
+  const data = await fetch(urlEndpoint).then((res) =>
     res.json()
   );
   return data;
@@ -112,7 +118,6 @@ const CrudPosts = () => {
         console.error("Erro ao atualizar o post:", error);
       }
     } else {
-      // Criando um novo post
       try {
         const newPost = await createPost({
           title: currentPost.title,

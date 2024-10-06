@@ -17,7 +17,7 @@ export const useUpdatePost = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/posts/${id}/${userId}`,
+        `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts/${id}/${userId}`,
         {
           title,
           text,
