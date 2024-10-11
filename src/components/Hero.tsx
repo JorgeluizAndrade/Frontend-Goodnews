@@ -17,12 +17,13 @@ export const Hero = () => {
             <motion.h1
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
-              className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"
+              className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900 "
             >
+              <span className="underline decoration-4 decoration-indigo-500 bg-gradient-to-l from-sky-500 via-cyan-600 to-blue-900 bg-clip-text text-transparent">
               Bem-vindos
-              <br className="hidden lg:inline-block" /> à Goodnews!
+              <br className="hidden lg:inline-block" /> à Goodnews! </span>
               <br className="hidden lg:inline-block" />{" "}
-              <span className="text-blue-800">
+              <span className="text-black/90">
                 A bíblia é mais atualizada que o jornal do amanhão 📖.{" "}
               </span>
             </motion.h1>

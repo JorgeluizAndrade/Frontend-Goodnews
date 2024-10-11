@@ -56,7 +56,7 @@ export const Posts = () => {
         <div className="grid gap-8">
           <div className="grid gap-4">
             <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold">Blog Posts</h1>
+              <h1 className="text-3xl underline decoration-sky-500/[.33] font-bold">Blog Posts</h1>
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
