@@ -28,8 +28,6 @@ const getData = async () => {
   return data;
 };
 
-console.log(urlEndpoint)
-
 export const Posts = () => {
   const [pagination, setPagination] = React.useState<number>(1);
   const totalPerPage = 5;
