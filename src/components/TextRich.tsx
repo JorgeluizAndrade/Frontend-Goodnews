@@ -4,8 +4,10 @@ import StarterKit from "@tiptap/starter-kit";
 import { FaBold } from "react-icons/fa";
 import { FaItalic, FaList } from "react-icons/fa";
 import { Toggle } from "@/components/ui/toggle";
+import Blockquote from '@tiptap/extension-blockquote'
 import { Separator } from "@/components/ui/separator";
 import { LuHeading2 } from "react-icons/lu";
+import { LuTextQuote } from "react-icons/lu";
 import Heading from "@tiptap/extension-heading";
 
 const RichTextEditor = ({
@@ -24,15 +26,23 @@ const RichTextEditor = ({
     },
     extensions: [
       StarterKit.configure({
-        bulletList: {
+        bulletList: { 
           HTMLAttributes: {
-            class: "list-disc pl-4",
+            class: "list-disc pl-4 list-outside",
           },
         },
       }),
       Heading.configure({
         levels: [1, 2, 3],
+        HTMLAttributes: {
+          class: "text-2xl italic md:not-italic underline decoration-sky-600 hover:decoration-blue-400",
+        },
       }),
+      Blockquote.configure({
+        HTMLAttributes: {
+          class: "border-l-4 border-sky-700 pl-4 italic text-black bg-gray-50"
+        }
+      })
     ],
     content: value, 
     onUpdate: ({ editor }) => {
@@ -53,7 +63,7 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
     <div className="border border-input bg-transparent rounded-br-md rounded-bl-md p-1 flex flex-row items-center gap-1">
       <Toggle
         size="sm"
-        className={editor.isActive("bold") ? "text-red-600" : "text-black"}
+        className={editor.isActive("bold") ? "text-red-600 " : "text-black"}
         pressed={editor.isActive("bold")}
         onPressedChange={() => editor.chain().focus().toggleBold().run()}
       >
@@ -85,6 +95,14 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
         onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
       >
         <FaList className="h-4 w-4" />
+      </Toggle>
+      <Toggle
+        size="sm"
+        className={editor.isActive("blockquote") ? "text-red-600" : "text-black"}
+        pressed={editor.isActive("blockquote")}
+        onPressedChange={() => editor.chain().focus().toggleBlockquote().run()}
+      >
+        <LuTextQuote className="h-4 w-4" />
       </Toggle>
     </div>
   );
