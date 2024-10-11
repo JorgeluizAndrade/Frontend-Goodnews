@@ -19,7 +19,7 @@ export const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900 "
             >
-              <span className="underline decoration-4 decoration-indigo-500 bg-gradient-to-l from-sky-500 via-cyan-600 to-blue-900 bg-clip-text text-transparent">
+              <span className="underline decoration-4 decoration-indigo-500">
               Bem-vindos
               <br className="hidden lg:inline-block" /> à Goodnews! </span>
               <br className="hidden lg:inline-block" />{" "}
