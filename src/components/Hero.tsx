@@ -19,7 +19,7 @@ export const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900 "
             >
-              <span className="underline decoration-4 decoration-indigo-500">
+              <span className="underline decoration-4 decoration-sky-500">
               Bem-vindos
               <br className="hidden lg:inline-block" /> à Goodnews! </span>
               <br className="hidden lg:inline-block" />{" "}
@@ -68,7 +68,7 @@ export const Hero = () => {
             }}
             className="lg:max-w-lg 
           shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]
-          lg:w-full md:w-1/2 w-5/6"
+          lg:w-full md:w-1/2 w-5/6 rounded-3xl"
           >
             <Image
               className="object-cover object-center rounded-3xl"
