@@ -6,7 +6,7 @@ type Props = {};
 
 const BibleX = (props: Props) => {
   return (
-    <section className="h-44">
+    <section id="biblex" className="h-44">
 
     <div>
       <h1 className="text-3xl underline text-center decoration-indigo-500 font-bold">

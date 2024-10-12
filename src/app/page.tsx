@@ -10,6 +10,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Posts />
+      <div className="h-24" />
       <BibleX />
     </div>
   );
