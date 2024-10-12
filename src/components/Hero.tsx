@@ -71,7 +71,7 @@ export const Hero = () => {
           lg:w-full md:w-1/2 w-5/6"
           >
             <Image
-              className="object-cover object-center rounded-xl"
+              className="object-cover object-center rounded-3xl"
               alt="hero"
               src={gif}
             />
