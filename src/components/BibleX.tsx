@@ -14,7 +14,7 @@ const BibleX = (props: Props) => {
       </h1>
      
       <p className="pt-3 text-center text-base text-stone-950">
-        Go read the Bible 🙄
+        Vai lê a Bíblia 🙄
       </p>
    
       <div className="h-[40rem] flex items-center justify-center w-full">
