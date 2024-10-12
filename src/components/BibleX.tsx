@@ -12,6 +12,11 @@ const BibleX = (props: Props) => {
       <h1 className="text-3xl underline text-center decoration-indigo-500 font-bold">
         Bible X😎
       </h1>
+     
+      <p className="pt-3 text-center text-base text-stone-950">
+        Go read the Bible 🙄
+      </p>
+   
       <div className="h-[40rem] flex items-center justify-center w-full">
         <CardStack items={CARDS} />
       </div>
