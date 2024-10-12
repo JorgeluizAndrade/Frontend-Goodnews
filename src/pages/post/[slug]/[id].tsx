@@ -1,6 +1,5 @@
 import { GetStaticProps, GetStaticPaths } from "next";
 import { Post } from "@/components/Post";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/router";
 import "@/app/globals.css";
 
@@ -13,25 +12,16 @@ export default function PostPage({ post }: { post: any }) {
   }
 
   const handleBack = () => {
-    router.back();
+    router.push("/");
   };
 
   return (
-    <div>
-      <Button 
-      size={"lg"}
-      variant={"ghost"}
-        onClick={handleBack}
-      >
-        <span className="text-xl">Voltar</span>
-      </Button>
       <Post slug={post.slug} id={post.id} />
-    </div>
   );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await fetch("http://localhost:8080/api/posts");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts`);
   const posts = await res.json();
 
   const paths = posts.map((post: { slug: string; id: string }) => ({
@@ -44,7 +34,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug, id } = params as { slug: string; id: string };
 
-  const res = await fetch(`http://localhost:8080/api/posts/${slug}/${id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts/${slug}/${id}`);
   const post = await res.json();
 
   return {

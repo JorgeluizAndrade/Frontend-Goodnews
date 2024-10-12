@@ -1,9 +1,7 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Button } from "./ui/button";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
-
-import { useRouter } from "next/router";
-
 
 export type Params = {
   slug: string;
@@ -16,64 +14,68 @@ type PostData = {
   title: string;
   text: string;
 };
+
 export const Post = ({ slug, id }: Params) => {
-  const [data, setData] = React.useState<PostData>();
-  const [loading, setLoading] = React.useState(true);
+  const [data, setData] = useState<PostData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const router = useRouter();
 
-  const getData = async () => {
-    const data = await fetch(
-      `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts/${slug}/${id}`
-    ).then((res) => res.json());
-    return data;
-  };
-
-    
-
-
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
-      const result = await getData();
-      setData(result);
-      setLoading(false);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts/${slug}/${id}`
+        );
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error("Failed to fetch post data", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
-  }, []);
+  }, [slug, id]);
 
   return (
-  <div className="container mx-auto px-4 md:px-6 py-12">
-    <div className="grid gap-8">
-      <div className="grid gap-4">
-        <div className="flex items-center justify-center">
-          <h1 className="text-3xl md:text-4xl text-center font-bold text-gray-900 dark:text-white">View Post</h1>
-        </div>
-        <div className="grid gap-6">
-          {loading ? (
-            <div className="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 transition-all shadow-lg hover:shadow-xl">
-              <div className="p-4 animate-pulse">
-                <div className="h-5 w-full bg-gray-300 dark:bg-gray-700 rounded-md mb-2" />
-                <div className="h-4 w-3/4 bg-gray-300 dark:bg-gray-700 rounded-md mb-2" />
-                <div className="h-3 w-1/2 bg-gray-300 dark:bg-gray-700 rounded-md" />
-              </div>
-            </div>
-          ) : (
-            <div className="group relative overflow-hidden rounded-lg text-center bg-white dark:bg-gray-900 transition-all">
-              <div className="p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white line-clamp-2">
-                  {data?.title}
-                </h2>
-                <div
-                  className="mt-4 font-sans text-lg text-gray-600 text-center dark:text-gray-400"
-                  dangerouslySetInnerHTML={{ __html: data?.text || "" }}
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+    <div className="container mx-auto px-4 md:px-6 py-12">
+      <Button variant="outline" onClick={() => router.push("/")} className="mb-4">
+        <ChevronLeftIcon className="h-5 w-5 mr-2" />
+        Ir para Home
+      </Button>
+      
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <PostContent title={data?.title} text={data?.text} />
+      )}
+    </div>
+  );
+};
+
+const Loader = () => (
+  <div className="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 transition-all shadow-lg hover:shadow-xl">
+    <div className="p-4 animate-pulse">
+      <div className="h-5 w-full bg-gray-300 dark:bg-gray-700 rounded-md mb-2" />
+      <div className="h-4 w-3/4 bg-gray-300 dark:bg-gray-700 rounded-md mb-2" />
+      <div className="h-3 w-1/2 bg-gray-300 dark:bg-gray-700 rounded-md" />
     </div>
   </div>
 );
-}
+
+const PostContent = ({ title, text }: { title?: string; text?: string }) => (
+  <div className="group relative overflow-hidden rounded-xl border-r-sky-500 border text-center bg-white dark:bg-gray-900 transition-all p-6 shadow-lg">
+    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white line-clamp-2">
+      {title}
+    </h2>
+    <div
+      className="mt-4 font-sans text-lg text-black dark:text-gray-400 text-center"
+      dangerouslySetInnerHTML={{ __html: text || "" }}
+    />
+  </div>
+);
+
+;
