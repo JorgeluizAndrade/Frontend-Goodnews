@@ -7,22 +7,20 @@ type Props = {};
 const BibleX = (props: Props) => {
   return (
     <section id="biblex" className="h-44">
+      <div>
+        <h1 className="text-3xl underline text-center decoration-indigo-500 font-bold">
+          Bible X😎
+        </h1>
 
-    <div>
-      <h1 className="text-3xl underline text-center decoration-indigo-500 font-bold">
-        Bible X😎
-      </h1>
-     
-      <p className="pt-3 text-center text-base text-stone-950">
-        Vai lê a Bíblia 🙄
-      </p>
-   
-      <div className="h-[40rem] flex items-center justify-center w-full">
-        <CardStack items={CARDS} />
+        <p className="pt-3 text-center text-base text-stone-950">
+          Vai lê a Bíblia 🙄
+        </p>
+
+        <div className="h-[40rem] flex items-center justify-center w-full">
+          <CardStack items={CARDS} />
+        </div>
       </div>
-    </div>
-  </section>
-
+    </section>
   );
 };
 
@@ -168,11 +166,25 @@ const CARDS = [
   },
   {
     id: 7,
-    name: "Apóstolo Paulo",
-    designation: "Filipenses 4:13",
+    name: "Jesus, The Lord and Savior",
+    designation: "Apocalipse 22:13-14",
     content: (
       <p>
-        <Highlight>Tudo posso naquele que me fortalece.</Highlight>
+        <Highlight>
+          Eu sou o Alfa e o Ômega, o princípio e o fim, o primeiro e o último.  
+           </Highlight>
+          <span className="underline decoration-red-500">
+          Bem-aventurados aqueles que guardam os seus mandamentos, para que
+          tenham direito à árvore da vida, e possam entrar na cidade pelas
+          portas.
+          </span>
+
+        <Highlight>
+        Porém estarão de fora os cães, e 
+        os feiticeiros, e os fornicadores, e os homicidas, e os idólatras, e 
+        qualquer que ama e comete a mentira.
+        </Highlight>
+
       </p>
     ),
   },
