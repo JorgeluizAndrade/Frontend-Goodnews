@@ -138,7 +138,7 @@ const PostContent = ({ title, text }: { title?: string; text?: string }) => (
       {title}
     </h2>
     <div
-      className="mt-4 font-sans text-lg flex-wrap break-all text-black dark:text-gray-400"
+      className="mt-4 font-sans text-lg flex-wrap break-all hyphens-auto text-black dark:text-gray-400"
       dangerouslySetInnerHTML={{ __html: text || "" }}
     />
   </div>
