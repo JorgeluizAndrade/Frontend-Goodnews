@@ -1,14 +1,21 @@
 "use client";
+
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { FaBold } from "react-icons/fa";
 import { FaItalic, FaList } from "react-icons/fa";
 import { Toggle } from "@/components/ui/toggle";
-import Blockquote from '@tiptap/extension-blockquote'
+import Blockquote from "@tiptap/extension-blockquote";
+import Youtube from "@tiptap/extension-youtube";
 import { Separator } from "@/components/ui/separator";
 import { LuHeading2 } from "react-icons/lu";
 import { LuTextQuote } from "react-icons/lu";
 import Heading from "@tiptap/extension-heading";
+import Image from '@tiptap/extension-image'
+import { FaYoutube } from "react-icons/fa6";
+import React from "react";
+import { FaImage } from "react-icons/fa";
+
 
 const RichTextEditor = ({
   value,
@@ -17,6 +24,9 @@ const RichTextEditor = ({
   value: string;
   onChange: (value: string) => void;
 }) => {
+  const [height, setHeight] = React.useState<number>(480);
+  const [width, setWidth] = React.useState<number>(640);
+
   const editor = useEditor({
     editorProps: {
       attributes: {
@@ -26,7 +36,7 @@ const RichTextEditor = ({
     },
     extensions: [
       StarterKit.configure({
-        bulletList: { 
+        bulletList: {
           HTMLAttributes: {
             class: "list-disc pl-4 list-outside",
           },
@@ -35,18 +45,32 @@ const RichTextEditor = ({
       Heading.configure({
         levels: [1, 2, 3],
         HTMLAttributes: {
-          class: "text-2xl italic md:not-italic underline decoration-sky-600 hover:decoration-blue-400",
+          class:
+            "text-2xl italic md:not-italic underline decoration-sky-600 hover:decoration-blue-400",
         },
       }),
       Blockquote.configure({
         HTMLAttributes: {
-          class: "border-l-4 border-sky-700 pl-4 italic text-black bg-gray-50"
-        }
+          class: "border-l-4 border-sky-700 pl-4 italic text-black bg-gray-50",
+        },
+      }),
+      Youtube.configure({
+        controls: false,
+        nocookie: true,
+        progressBarColor: "blue",
+        HTMLAttributes: {
+          class: "rounded-lg",
+        },
+      }),
+      Image.configure({
+        HTMLAttributes: {
+          class: 'rounded-lg',
+        },      
       })
     ],
-    content: value, 
+    content: value,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML()); 
+      onChange(editor.getHTML());
     },
   });
 
@@ -59,6 +83,32 @@ const RichTextEditor = ({
 };
 
 const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
+  const addYoutubeVideo = () => {
+    const url = prompt("Enter YouTube URL");
+
+    if (url) {
+      if (!editor) {
+        return null;
+      }
+      editor.commands.setYoutubeVideo({
+        src: url,
+        width: Math.max(320, parseInt("width", 10)) || 500,
+        height: Math.max(180, parseInt("height", 10)) || 300,
+      });
+    }
+  };
+
+  const addImage = React.useCallback(() => {
+    const url = window.prompt('URL')
+
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run()
+    }
+  }, [editor])
+
+
+  
+
   return (
     <div className="border border-input bg-transparent rounded-br-md rounded-bl-md p-1 flex flex-row items-center gap-1">
       <Toggle
@@ -90,7 +140,9 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
       <Separator orientation="vertical" className="w-[1px] h-8" />
       <Toggle
         size="sm"
-        className={editor.isActive("bulletList") ? "text-red-600" : "text-black"}
+        className={
+          editor.isActive("bulletList") ? "text-red-600" : "text-black"
+        }
         pressed={editor.isActive("bulletList")}
         onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
       >
@@ -98,11 +150,31 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
       </Toggle>
       <Toggle
         size="sm"
-        className={editor.isActive("blockquote") ? "text-red-600" : "text-black"}
+        className={
+          editor.isActive("blockquote") ? "text-red-600" : "text-black"
+        }
         pressed={editor.isActive("blockquote")}
         onPressedChange={() => editor.chain().focus().toggleBlockquote().run()}
       >
         <LuTextQuote className="h-4 w-4" />
+      </Toggle>
+
+      <Toggle
+        size="sm"
+        className={editor.isActive("youtube") ? "text-red-600" : "text-black"}
+        pressed={editor.isActive("youtube")}
+        onClick={addYoutubeVideo}
+      >
+        <FaYoutube className="h-4 w-4" />
+      </Toggle>
+
+      <Toggle
+        size="sm"
+        className={editor.isActive("image") ? "text-red-600" : "text-black"}
+        pressed={editor.isActive("image")}
+        onClick={addImage}
+      >
+        <FaImage className="h-4 w-4" />
       </Toggle>
     </div>
   );
