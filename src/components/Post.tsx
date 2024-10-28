@@ -140,6 +140,7 @@ const PostContent = ({ title, text }: { title?: string; text?: string }) => (
     </h2>
     <div
       className="mt-4 font-sans text-lg flex-wrap break-all hyphens-auto text-black dark:text-gray-400"
+      style={{ hyphens: 'auto', overflowWrap: 'break-word', wordBreak: 'break-word' }} 
       dangerouslySetInnerHTML={{ __html: text || "" }}
     />
   </div>
