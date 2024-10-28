@@ -9,6 +9,7 @@ import { ChevronRightIcon } from "@radix-ui/react-icons";
 
 
 
+
 export type Params = {
   slug: string;
   id: string;
@@ -74,7 +75,7 @@ export const Post = ({ slug, id }: Params) => {
     
   return (
     <div className="container mx-auto px-4 md:px-6 py-12">
-      <Button variant="outline" onClick={() => router.push("/")} className="mb-4">
+      <Button variant="outline" onClick={() => router.push("/")} className="mb-4 rounded-xl">
         <ChevronLeftIcon className="h-5 w-5 mr-2" />
         Ir para Home
       </Button>

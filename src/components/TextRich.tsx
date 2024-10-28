@@ -2,6 +2,7 @@
 
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Paragraph from "@tiptap/extension-paragraph"; // Import Paragraph extension
 import { FaBold } from "react-icons/fa";
 import { FaItalic, FaList } from "react-icons/fa";
 import { Toggle } from "@/components/ui/toggle";
@@ -11,11 +12,10 @@ import { Separator } from "@/components/ui/separator";
 import { LuHeading2 } from "react-icons/lu";
 import { LuTextQuote } from "react-icons/lu";
 import Heading from "@tiptap/extension-heading";
-import Image from '@tiptap/extension-image'
+import Image from '@tiptap/extension-image';
 import { FaYoutube } from "react-icons/fa6";
 import React from "react";
 import { FaImage } from "react-icons/fa";
-
 
 const RichTextEditor = ({
   value,
@@ -42,6 +42,12 @@ const RichTextEditor = ({
           },
         },
       }),
+      Paragraph.configure({
+        HTMLAttributes: {
+          class: 'my-custom-class my-4 text-base text-gray-800 leading-6', // Estilos personalizados usando Tailwind
+        },
+      }),
+   // Add Paragraph to extensions array
       Heading.configure({
         levels: [1, 2, 3],
         HTMLAttributes: {
@@ -65,7 +71,7 @@ const RichTextEditor = ({
       Image.configure({
         HTMLAttributes: {
           class: 'rounded-lg',
-        },      
+        },
       })
     ],
     content: value,
@@ -98,6 +104,10 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
     }
   };
 
+  const setParagraph = () => {
+    editor.commands.setParagraph();
+  };
+
   const addImage = React.useCallback(() => {
     const url = window.prompt('URL')
 
@@ -105,9 +115,6 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
       editor.chain().focus().setImage({ src: url }).run()
     }
   }, [editor])
-
-
-  
 
   return (
     <div className="border border-input bg-transparent rounded-br-md rounded-bl-md p-1 flex flex-row items-center gap-1">
@@ -176,6 +183,16 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
       >
         <FaImage className="h-4 w-4" />
       </Toggle>
+
+      <Toggle
+        size="sm"
+        className={editor.isActive("paragraph") ? "text-red-600" : "text-black"}
+        pressed={editor.isActive("paragraph")}
+        onClick={setParagraph} // Chama setParagraph ao clicar
+      >
+        <span>Paragraph</span> {/* Você pode substituir por um ícone se desejar */}
+      </Toggle>
+
     </div>
   );
 };
