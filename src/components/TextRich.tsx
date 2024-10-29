@@ -44,7 +44,7 @@ const RichTextEditor = ({
       }),
       Paragraph.configure({
         HTMLAttributes: {
-          class: 'my-custom-class my-4 text-base break-all hyphens-auto text-gray-800 leading-6', // Estilos personalizados usando Tailwind
+          class: 'class-paragraph my-4 text-base break-all hyphens-auto text-gray-800 leading-6', // Estilos personalizados usando Tailwind
         },
       }),
    // Add Paragraph to extensions array
