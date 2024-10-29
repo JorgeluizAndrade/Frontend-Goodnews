@@ -20,8 +20,9 @@ export const Hero = () => {
               className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900 "
             >
               <span className="underline decoration-4 decoration-sky-500">
-              Bem-vindos
-              <br className="hidden lg:inline-block" /> à Goodnews! </span>
+                Bem-vindos
+                <br className="hidden lg:inline-block" /> à Goodnews!{" "}
+              </span>
               <br className="hidden lg:inline-block" />{" "}
               <span className="text-black/90">
                 A bíblia é mais atualizada que o jornal do amanhão 📖.{" "}

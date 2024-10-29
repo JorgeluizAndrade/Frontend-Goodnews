@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { LuHeading2 } from "react-icons/lu";
 import { LuTextQuote } from "react-icons/lu";
 import Heading from "@tiptap/extension-heading";
-import Image from '@tiptap/extension-image';
+import Image from "@tiptap/extension-image";
 import { FaYoutube } from "react-icons/fa6";
 import React from "react";
 import { FaImage } from "react-icons/fa";
@@ -44,10 +44,11 @@ const RichTextEditor = ({
       }),
       Paragraph.configure({
         HTMLAttributes: {
-          class: 'class-paragraph my-4 font-sans text-base break-all hyphens-auto text-gray-800 leading-6', // Estilos personalizados usando Tailwind
+          class:
+            "class-paragraph my-4 font-sans text-base break-all hyphens-auto text-gray-800 leading-6", // Estilos personalizados usando Tailwind
         },
       }),
-   // Add Paragraph to extensions array
+      // Add Paragraph to extensions array
       Heading.configure({
         levels: [1, 2, 3],
         HTMLAttributes: {
@@ -70,9 +71,9 @@ const RichTextEditor = ({
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'rounded-lg',
+          class: "rounded-lg",
         },
-      })
+      }),
     ],
     content: value,
     onUpdate: ({ editor }) => {
@@ -109,12 +110,12 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
   };
 
   const addImage = React.useCallback(() => {
-    const url = window.prompt('URL')
+    const url = window.prompt("URL");
 
     if (url) {
-      editor.chain().focus().setImage({ src: url }).run()
+      editor.chain().focus().setImage({ src: url }).run();
     }
-  }, [editor])
+  }, [editor]);
 
   return (
     <div className="border border-input bg-transparent rounded-br-md rounded-bl-md p-1 flex flex-row items-center gap-1">
@@ -190,9 +191,9 @@ const RichTextEditorToolbar = ({ editor }: { editor: Editor }) => {
         pressed={editor.isActive("paragraph")}
         onClick={setParagraph} // Chama setParagraph ao clicar
       >
-        <span>Paragraph</span> {/* Você pode substituir por um ícone se desejar */}
+        <span>Paragraph</span>{" "}
+        {/* Você pode substituir por um ícone se desejar */}
       </Toggle>
-
     </div>
   );
 };

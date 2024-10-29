@@ -1,14 +1,11 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button } from "./ui/button";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-
-
-
 
 export type Params = {
   slug: string;
@@ -26,8 +23,7 @@ export const Post = ({ slug, id }: Params) => {
   const [data, setData] = useState<PostData[]>([]);
   const [currentPost, setcurrentPost] = useState<PostData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [hoveredId, setHoveredId] = useState<string | null>(null)
-
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -38,7 +34,7 @@ export const Post = ({ slug, id }: Params) => {
           `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts/${slug}/${id}`
         );
         const result = await response.json();
-        setcurrentPost(result)
+        setcurrentPost(result);
       } catch (error) {
         console.error("Failed to fetch post data", error);
       } finally {
@@ -49,7 +45,6 @@ export const Post = ({ slug, id }: Params) => {
     fetchData();
   }, [slug, id]);
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -57,8 +52,9 @@ export const Post = ({ slug, id }: Params) => {
           `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts`
         );
         const resultAllPosts = await response.json();
-        const filteredPost = resultAllPosts.filter((post: PostData)=> post.id !== id
-      )
+        const filteredPost = resultAllPosts.filter(
+          (post: PostData) => post.id !== id
+        );
         setData(filteredPost);
       } catch (error) {
         console.error("Failed to fetch post data", error);
@@ -70,16 +66,16 @@ export const Post = ({ slug, id }: Params) => {
     fetchData();
   }, []);
 
-
-
-    
   return (
     <div className="container mx-auto px-4 md:px-6 py-12">
-      <Button variant="outline" onClick={() => router.push("/")} className="mb-4 rounded-xl">
+      <Button
+        variant="outline"
+        onClick={() => router.push("/")}
+        className="mb-4 rounded-xl"
+      >
         <ChevronLeftIcon className="h-5 w-5 mr-2" />
         Ir para Home
       </Button>
-      
 
       {loading ? (
         <Loader />
@@ -87,13 +83,11 @@ export const Post = ({ slug, id }: Params) => {
         <PostContent title={currentPost?.title} text={currentPost?.text} />
       )}
 
-      <h1 className="mt-11 text-2xl text-black">
-        Leia também
-      </h1>
+      <h1 className="mt-11 text-2xl text-black">Leia também</h1>
 
       <ul>
         {data.map((post, index) => (
-            <motion.li
+          <motion.li
             key={post.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -107,9 +101,14 @@ export const Post = ({ slug, id }: Params) => {
               className="block p-6 rounded-lg bg-card hover:bg-accent transition-colors duration-300 shadow-md hover:shadow-lg"
             >
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-primary">{post.title}</h2>
+                <h2 className="text-xl font-semibold text-primary">
+                  {post.title}
+                </h2>
                 <motion.div
-                  animate={{ x: hoveredId === post.id ? 0 : -10, opacity: hoveredId === post.id ? 1 : 0 }}
+                  animate={{
+                    x: hoveredId === post.id ? 0 : -10,
+                    opacity: hoveredId === post.id ? 1 : 0,
+                  }}
                   transition={{ duration: 0.2 }}
                 >
                   <ChevronRightIcon className="w-5 h-5 text-primary" />
@@ -141,10 +140,12 @@ const PostContent = ({ title, text }: { title?: string; text?: string }) => (
     <div
       className="mt-4 font-sans  flex-wrap break-all hyphens-auto text-lg text-black dark:text-gray-400"
       lang="pt-BR"
-      style={{ hyphens: 'auto', overflowWrap: 'break-word', wordBreak: 'break-word' }} 
+      style={{
+        hyphens: "auto",
+        overflowWrap: "break-word",
+        wordBreak: "break-word",
+      }}
       dangerouslySetInnerHTML={{ __html: text || "" }}
     />
   </div>
 );
-
-

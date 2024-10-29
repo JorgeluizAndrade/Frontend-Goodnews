@@ -19,7 +19,7 @@ const Login = (props: Props) => {
   const { login, successMessage, errorMessage } = useAuth();
 
   const form = useForm<LoginSchema>();
-  
+
   const onSubmit: SubmitHandler<LoginSchema> = (data) => {
     login(data);
   };
@@ -33,7 +33,6 @@ const Login = (props: Props) => {
         </p>
       </div>
 
-     
       {successMessage && (
         <div className="text-green-600 font-semibold text-center">
           {successMessage}
@@ -72,7 +71,7 @@ const Login = (props: Props) => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel  htmlFor="password">Senha</FormLabel>
+                  <FormLabel htmlFor="password">Senha</FormLabel>
                   <FormControl>
                     <Input id="password" type="password" required {...field} />
                   </FormControl>
