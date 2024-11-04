@@ -16,7 +16,7 @@ const BibleX = (props: Props) => {
           Vai lê a Bíblia 🙄
         </p>
 
-        <div className="h-[40rem] flex items-center justify-center w-full">
+        <div className="h-[40rem] flex items-center pr-20 justify-center w-full">
           <CardStack items={CARDS} />
         </div>
       </div>

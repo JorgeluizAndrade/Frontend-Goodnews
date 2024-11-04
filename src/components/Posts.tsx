@@ -19,12 +19,10 @@ type PostApi = {
   slug: string;
 };
 
-const urlEndpoint:string = `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts`
+const urlEndpoint: string = `${process.env.NEXT_PUBLIC_GOODNEWS_API}/api/posts`;
 
 const getData = async () => {
-  const data = await fetch(urlEndpoint).then((res) =>
-    res.json()
-  );
+  const data = await fetch(urlEndpoint).then((res) => res.json());
   return data;
 };
 
@@ -56,9 +54,11 @@ export const Posts = () => {
         <div className="grid gap-8">
           <div className="grid gap-4">
             <div className="flex items-center justify-between">
-              <h1 className="text-3xl underline decoration-sky-500/[.33] font-bold">Blog Posts</h1>
+              <h1 className="text-3xl underline decoration-sky-500/[.33] font-bold">
+                Blog Posts
+              </h1>
               <Pagination>
-                <PaginationContent>
+                <PaginationContent className="flex flex-wrap gap-2">
                   <PaginationItem>
                     <PaginationPrevious
                       href="#"
@@ -67,33 +67,17 @@ export const Posts = () => {
                       }
                     />
                   </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                      href="#posts"
-                      isActive={pagination === 1}
-                      onClick={() => setPagination(1)}
-                    >
-                      1
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                      href="#posts"
-                      isActive={pagination === 2}
-                      onClick={() => setPagination(2)}
-                    >
-                      2
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                      href="#posts"
-                      isActive={pagination === 3}
-                      onClick={() => setPagination(3)}
-                    >
-                      3
-                    </PaginationLink>
-                  </PaginationItem>
+                  {[1, 2, 3].map((pageNum) => (
+                    <PaginationItem key={pageNum}>
+                      <PaginationLink
+                        href="#posts"
+                        isActive={pagination === pageNum}
+                        onClick={() => setPagination(pageNum)}
+                      >
+                        {pageNum}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
                   <PaginationItem>
                     <PaginationEllipsis />
                   </PaginationItem>
@@ -113,14 +97,14 @@ export const Posts = () => {
               </Pagination>
             </div>
             <div className="grid gap-6">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+              <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                 {loading
                   ? Array.from({ length: totalPerPage }).map((_, index) => (
                       <div
                         key={index}
-                        className="group relative overflow-hidden rounded-lg bg-background transition-all hover:shadow-lg"
+                        className="group relative overflow-hidden rounded-lg bg-background transition-all hover:shadow-lg max-w-xs mx-auto"
                       >
-                        <div role="status" className="max-w-sm animate-pulse">
+                        <div role="status" className="max-w-sm animate-pulse p-4">
                           <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
                           <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
                           <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
@@ -134,7 +118,7 @@ export const Posts = () => {
                   : displayedPosts.map((post) => (
                       <div
                         key={post.id}
-                        className="group relative overflow-hidden rounded-lg bg-background transition-all hover:shadow-lg"
+                        className="group relative overflow-hidden rounded-lg bg-background transition-all hover:shadow-lg max-w-xs mx-auto"
                       >
                         <Link
                           href={`/post/${post.slug}/${post.id}`}
