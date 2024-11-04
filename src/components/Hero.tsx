@@ -3,6 +3,8 @@
 import Image from "next/image";
 import gif from "../../public/images/News (1).gif";
 
+import { IoLogoInstagram } from "react-icons/io5";
+
 import { motion } from "framer-motion";
 
 import React from "react";
@@ -50,7 +52,7 @@ export const Hero = () => {
             <motion.div
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex justify-center"
+              className="flex  flex-col sm:flex-row items-center justify-center gap-2 px-4 text-lg font-medium"
             >
               <Link
                 href="#posts"
@@ -58,6 +60,15 @@ export const Hero = () => {
               >
                 Ver postagens
               </Link>
+
+              <Link 
+              href="https://www.instagram.com/jorgeandrade.__/"
+              className="group bg-sky-400 text-white px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:bg-sky-800 active:scale-105 transition"
+              >
+                Entre em Contato {" "}
+                <IoLogoInstagram className="opacity-70 group-hover:translate-x-1 transition" />
+              </Link>
+
             </motion.div>
           </div>
           <motion.div
