@@ -133,17 +133,15 @@ const Loader = () => (
 );
 
 const PostContent = ({ title, text }: { title?: string; text?: string }) => (
-  <div className="group relative overflow-hidden rounded-xl border-r-sky-500 border bg-white dark:bg-gray-900 transition-all p-6 shadow-lg">
+  <div className="group relative  overflow-hidden rounded-xl border-r-sky-500 border bg-white dark:bg-gray-900 transition-all p-6 shadow-lg">
     <h2 className="text-2xl text-center flex-wrap font-semibold text-gray-900 dark:text-white line-clamp-2">
       {title}
     </h2>
     <div
-      className="mt-4 font-sans  flex-wrap break-all hyphens-auto text-lg text-black dark:text-gray-400"
+      className="mt-4 font-sans  flex-wrap  hyphens-auto text-lg text-black dark:text-gray-400"
       lang="pt-BR"
       style={{
         hyphens: "auto",
-        overflowWrap: "break-word",
-        wordBreak: "break-word",
       }}
       dangerouslySetInnerHTML={{ __html: text || "" }}
     />
